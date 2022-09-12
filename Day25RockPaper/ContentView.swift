@@ -7,27 +7,18 @@
 
 import SwiftUI
 
-//struct customButton: View{
-//    @State var title: String
-//    var selected: String
-//    var body: some View{
-//        Button(title){
-//            print("\(title) = \(selected)")
-//        }.font(.system(size: 60).weight(.heavy))
-//    }
-//}
 
 struct ContentView: View {
 
     let rockPaperPaper = ["Rock 🪨", "Paper 🧻", "Scissors ✂️"]
-    @State var score = 0
+    @State var yourScore = 0
+    @State var botScore = 9
+
     @State var result = ""
-    @State var subResult = ""
     @State var opponentSelection = ""
     @State var yourSelection = ""
     
     var body: some View {
-        //3 button choose to click
         VStack{
             ForEach(0..<3){ number in
                 Button(rockPaperPaper[number]){
@@ -41,6 +32,8 @@ struct ContentView: View {
                     Text(yourSelection)
                         .font(.system(size: 30).weight(.heavy))
                         .foregroundColor(.blue)
+                    Text("\(yourScore)")
+                        .font(.system(size: 30).weight(.heavy)).foregroundColor(.indigo)
                 }
                 .padding()
                 HStack{
@@ -49,13 +42,13 @@ struct ContentView: View {
                     Text(opponentSelection)
                         .font(.system(size: 30).weight(.heavy))
                         .foregroundColor(.blue)
+                    Text("\(botScore)")
+                        .font(.system(size: 30).weight(.heavy)).foregroundColor(.indigo)
                 }
             }
             .padding()
-//            Text("result: \(result)")
-//                .font(.system(size: 30))
-//                .padding()
-            Text("score: \(score)")
+            
+            Text(result)
                 .font(.system(size: 30))
         }
     }
@@ -71,43 +64,51 @@ struct ContentView: View {
         
         if randomRockPaperPaper[0] == selected{
             print ("Try agin - \(selected) is the same \(randomRockPaperPaper[0])")
-            
-            result = "Try agin"
-            subResult = "\(selected) is the same \(randomRockPaperPaper[0])"
         }
         
         if selected == "Rock 🪨" && randomRockPaperPaper[0] == "Paper 🧻" {
             print ("You lost - \(randomRockPaperPaper[0]) Wraps \(selected)")
-            result = "You lost - \(randomRockPaperPaper[0]) Wraps \(selected)"
+            botScore += 1
         }
         
         else if selected == "Rock 🪨" && randomRockPaperPaper[0] == "Scissors ✂️" {
             print ("You won - \(selected ) Break \(randomRockPaperPaper[0])")
-            score += 1
-            result = "You won - \(selected ) Break \(randomRockPaperPaper[0])"
+            yourScore += 1
         }
         
         
         if selected == "Paper 🧻" && randomRockPaperPaper[0] == "Rock 🪨" {
             print ("You won - \(selected) Wraps \(randomRockPaperPaper[0])")
-            result = "You won - \(selected) Wraps \(randomRockPaperPaper[0])"
-            score += 1
+            yourScore += 1
         }
         
         else if selected == "Paper 🧻" && randomRockPaperPaper[0] == "Scissors ✂️" {
             print ("You lost - \(randomRockPaperPaper[0]) cut \(selected)")
-            result = "You lost - \(randomRockPaperPaper[0]) cut \(selected)"
+            botScore += 1
         }
         
         if selected == "Scissors ✂️" && randomRockPaperPaper[0] == "Rock 🪨" {
             print ("You lost - \(randomRockPaperPaper[0]) break \(selected)")
-            result = "You lost - \(randomRockPaperPaper[0]) break \(selected)"
+            botScore += 1
         }
         
         else if selected == "Scissors ✂️" && randomRockPaperPaper[0] == "Paper 🧻" {
             print ("You won - \(selected) cut \(randomRockPaperPaper[0])")
-            result = "You won - \(selected) cut \(randomRockPaperPaper[0])"
-            score += 1
+            yourScore += 1
+        }
+        
+        if botScore == 10{
+            result = "Game Over... You Lost 🙁"
+            botScore = 0
+            yourScore = 0
+        }
+        if yourScore == 10{
+            result = "Game Over... You Won 😀"
+            botScore = 0
+            yourScore = 0
+        }
+        if botScore == 1 || yourScore == 1{
+            result = ""
         }
     }
 }
